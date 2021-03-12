@@ -30,12 +30,22 @@ one_day <- function(i_date,
                     spore_interception_parameter,
                     spores_per_gp_per_wet_hour) {
 
+  # make data.table variables available to the global environment as NULL
+  #  objects to reduce check() notes
+  times <- temp <- wet_hours <- rain <- new_gp <- sporulating_gp <-
+    cdd_at_infection <- noninfected_gp <- NULL
+
   # expand time to be hourly
   i_time <- rep(i_date, 24) + lubridate::dhours(0:23)
 
   # subset weather data by day
   weather_day <-
     weather_dat[times %in% i_time, ]
+
+  # Check weather contains values
+  if(all(weather_day[,is.na(temp)])) {
+    stop("\nTemperature which is needed for the model is not recorded in weather for", i_date)
+  }
 
   # obtain summary weather for i_day
   i_mean_air_temp <- mean(weather_day[, temp])
