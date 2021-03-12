@@ -225,7 +225,19 @@ test_that("primary_infection_foci input is a unrecognicsed character error",{
       primary_infection_foci = "qry")
   )})
 
-
+test_that("expect error when there is no temperature in weather data",{
+newM_weather_noTm <- newM_weather[,temp:= NA_real_]
+expect_error(
+trace_asco(
+  weather = newM_weather,
+  paddock_length = 100,
+  paddock_width = 100,
+  initial_infection = "1998-05-10",
+  sowing_date = as.POSIXct("1998-05-09"),
+  harvest_date = as.POSIXct("1998-05-12"),
+  time_zone = "Australia/Perth", # weather file is in Perth timezone
+  primary_infection_foci = "center")
+)})
 
 # library(future)
 # future::plan("multisession")

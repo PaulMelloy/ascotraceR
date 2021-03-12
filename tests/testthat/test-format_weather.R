@@ -686,13 +686,16 @@ test_that("format_weather detects impossible times", {
 }
 )
 
+
+Newmarracarra <-
+   system.file("extdata",
+               "1998_Newmarracarra_weather_table.csv",
+               package = "ascotraceR")
+station_data <-
+   system.file("extdata", "stat_dat.csv", package = "ascotraceR")
+
 test_that("Incorrect column names are picked up and error is given", {
-   Newmarracarra <-
-      system.file("extdata",
-                  "1998_Newmarracarra_weather_table.csv",
-                  package = "ascotraceR")
-   station_data <-
-      system.file("extdata", "stat_dat.csv", package = "ascotraceR")
+
    expect_error(
       weather <- format_weather(
          x = read.csv(Newmarracarra),
@@ -702,6 +705,24 @@ test_that("Incorrect column names are picked up and error is given", {
          wd_sd = "wd_sd",
          rain = "rain_mm",
          wd = "wdd",
+         station = "Location",
+         time_zone = "Australia/Perth",
+         lonlat_file = station_data
+      )
+   )
+})
+
+test_that("warning is given when no temperature is output", {
+
+   expect_error(
+      weather_problem <- format_weather(
+         x = read.csv(Newmarracarra),
+         POSIXct_time = "Local.Time",
+         ws = "ws",
+         temp = "daily_temp",
+         wd_sd = "wd_sd",
+         rain = "rain_mm",
+         wd = "wd",
          station = "Location",
          time_zone = "Australia/Perth",
          lonlat_file = station_data
