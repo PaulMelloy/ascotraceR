@@ -90,6 +90,9 @@ trace_asco <- function(weather,
                        n_foci = 1,
                        spores_per_gp_per_wet_hour = 0.22){
 
+# make data.table variables available to the global environment as NULL
+#  objects to reduce check() notes
+  x <- y <- sp_gp <- NULL
 
   # check date inputs for validity -----------------------------------------
   .vali_date <- function(x) {

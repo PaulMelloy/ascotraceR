@@ -12,14 +12,17 @@
 #'   Also known as the 'spore_rate'. Value is dependent on the susceptibility of the host genotype.
 #' @keywords internal
 #' @noRd
-
-
 spores_each_wet_hour <- function(h,
                                  weather_hourly,
                                  paddock,
                                  max_interception_probability,
                                  spore_interception_parameter,
                                  spores_per_gp_per_wet_hour) {
+
+  # make data.table variables available to the global environment as NULL
+  #  objects to reduce check() notes
+  rain <- x <- y <- ws <- wd <- wd_sd <- spores_per_packet <-
+    sporulating_gp <- NULL
 
   # obtain weather data for hour_i
 

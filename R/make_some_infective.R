@@ -11,6 +11,11 @@
 make_some_infective <- function(daily_vals,
                                 latent_period = 200) {
 
+  # make data.table variables available to the global environment as NULL
+  #  objects to reduce check() notes
+  cdd_at_infection <- x <- y <- noninfected_gp <- spores_per_packet <-
+    sporulating_gp <- NULL
+
   newly_exposed <- daily_vals[["newly_infected"]]
 
   newly_infectious <-

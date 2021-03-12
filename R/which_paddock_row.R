@@ -14,6 +14,11 @@
 #' @keywords internal
 #' @noRd
 which_paddock_row <- function(paddock, query){
+
+  # make data.table variables available to the global environment as NULL
+  #  objects to reduce check() notes
+  x <- y <- NULL
+
   setDT(paddock)
   rows1 <-
     apply(query, 1, function(qu){

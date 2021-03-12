@@ -8,6 +8,9 @@ spread_spores <-
            spore_interception_parameter,
            weather_hourly) {
 
+    # make data.table variables available to the global environment as NULL
+    #  objects to reduce check() notes
+    rain <- NULL
 
     # k = intercept_spores(
     #   spore_interception_parameter = spore_interception_parameter,

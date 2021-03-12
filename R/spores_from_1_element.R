@@ -35,6 +35,10 @@ spores_from_1_element <-
            paddock
            ) {
 
+    # make data.table variables available to the global environment as NULL
+    #  objects to reduce check() notes
+    x <- y <- NULL
+
     # this might be able to be calculated at the spread_spores level, and If statement should come first
     # given that it is if == 0
     spore_packets <- potentially_effective_spores(spores_per_gp_per_wet_hour = spores_per_gp_per_wet_hour,

@@ -38,9 +38,12 @@
 #'   primary_infection_foci = "center")
 #'
 #'   tracer_plot(traced,102)
-
-
 tracer_plot <- function(dat, day, tiles = "sporulating_gp"){
+
+  # make data.table variables available to the global environment as NULL
+  #  objects to reduce check() notes
+  x <- y <- sporulating_gp <- noninfected_gp <- NULL
+
   dat1 <- dat[[day]][["paddock"]]
 
 
