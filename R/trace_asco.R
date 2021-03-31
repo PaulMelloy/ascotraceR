@@ -136,7 +136,7 @@ trace_asco <- function(weather,
   harvest_date <-
     lubridate::ymd(.vali_date(harvest_date), tz = time_zone) + lubridate::dhours(23)
 
-  # check epidemic start is after sowing date
+  # check initial infection is after sowing date
   if(initial_infection <= sowing_date){
     stop("initial_infection occurs prior to sowing_date\n
          please submit an initial_infection date which occurs after crop_sowing")
