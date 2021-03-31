@@ -26,8 +26,8 @@
 #' @param primary_infection_foci it refers to the inoculated quadrat
 #'  located at the centre of the paddock from where disease spreads
 #'  Defaults to \code{"centre"}
-#' @param primary_infection_intensity The intensity of primary infections as
-#'  described by the number of sporulating growing points.
+#' @param number_of_primary_infection_foci The of number of primary infections foci that initiates
+#' primary infections. Defaults to \code{1}.
 #' @param latent_period_cdd latent period in cumulative degree days (sum of
 #'  daily temperature means) is the period between infection and production of
 #'  lesions on susceptible growing points. Defaults to \code{200}
@@ -86,7 +86,7 @@ trace_asco <- function(weather,
                        latent_period_cdd = 200,
                        time_zone = "UTC",
                        primary_infection_foci = "random",
-                       primary_infection_intensity = 1,
+                       number_of_primary_infection_foci = 1,
                        n_foci = 1,
                        spores_per_infective_gp_per_wet_hour = 0.22){
 
@@ -119,9 +119,9 @@ trace_asco <- function(weather,
   }
 
 
-  if (primary_infection_intensity > seeding_rate) {
+  if (number_of_primary_infection_foci > seeding_rate) {
     stop(
-      "primary_infection_intensity exceeds the number of starting growing points - 'seeding_rate': ",
+      "number_of_primary_infection_foci exceeds the number of starting growing points - 'seeding_rate': ",
       seeding_rate
     )
   }
@@ -200,7 +200,7 @@ trace_asco <- function(weather,
   infected_rows <- which_paddock_row(paddock = paddock,
                                      query = primary_infection_foci)
   if(ncol(primary_infection_foci) == 2){
-    primary_infection_foci[,sp_gp := primary_infection_intensity]
+    primary_infection_foci[,sp_gp := number_of_primary_infection_foci]
   }
 
   # define paddock variables at time 1
