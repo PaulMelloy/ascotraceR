@@ -43,7 +43,7 @@ test1 <- spores_each_wet_hour(
   paddock = paddock,
   max_interception_probability = 1,
   spore_interception_parameter = spore_interception_parameter,
-  spores_per_gp_per_wet_hour = 0.22
+  spores_per_infective_gp_per_wet_hour = 0.22
 )}
 
 test_that("test1 returns expected output",{
@@ -61,7 +61,7 @@ test_that("test1 returns expected output",{
       paddock = paddock,
       max_interception_probability = 1,
       spore_interception_parameter = spore_interception_parameter,
-      spores_per_gp_per_wet_hour = 0.22
+      spores_per_infective_gp_per_wet_hour = 0.22
     )
   )
   expect_is(test1, "data.table")
@@ -90,7 +90,7 @@ test2 <- spores_each_wet_hour(
   paddock = paddock,
   max_interception_probability = 1,
   spore_interception_parameter = spore_interception_parameter,
-  spores_per_gp_per_wet_hour = 0.22
+  spores_per_infective_gp_per_wet_hour = 0.22
 )
 
 test_that("test2 returns expected output",{
@@ -111,7 +111,7 @@ test3 <- lapply(seq_len(weather_day[1,wet_hours]),
                paddock = paddock,
                max_interception_probability = 1,
                spore_interception_parameter = spore_interception_parameter,
-               spores_per_gp_per_wet_hour = 0.22)
+               spores_per_infective_gp_per_wet_hour = 0.22)
 
 
 test_that("test3 with lapply returns expected output",{

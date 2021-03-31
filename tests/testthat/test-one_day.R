@@ -65,7 +65,7 @@ test1 <- one_day(i_date = od_t1_i_date,
                  gp_rr = 0.0065,
                  max_gp = max_gp,
                  spore_interception_parameter = spore_interception_parameter,
-                 spores_per_gp_per_wet_hour = 0.22)
+                 spores_per_infective_gp_per_wet_hour = 0.22)
 
 
 test_that("one_day single infection foci returns expected output", {
@@ -126,7 +126,7 @@ test2 <- one_day(i_date = od_t1_i_date,
                  gp_rr = 0.0065,
                  max_gp = max_gp,
                  spore_interception_parameter = spore_interception_parameter,
-                 spores_per_gp_per_wet_hour = 0.22)
+                 spores_per_infective_gp_per_wet_hour = 0.22)
 
 test_that("one_day test2 repeat using test1 single infection foci returns expected output", {
   expect_silent(test2[["paddock"]]) # This line is here due to https://github.com/Rdatatable/data.table/issues/869
@@ -189,7 +189,7 @@ test3 <- one_day(i_date = od_t1_i_date,
                     gp_rr = 0.0065,
                     max_gp = max_gp,
                     spore_interception_parameter = spore_interception_parameter,
-                 spores_per_gp_per_wet_hour = 0.22)
+                 spores_per_infective_gp_per_wet_hour = 0.22)
 
 test_that("one_day test3 adds to cumulative degree days and passes latent period", {
   expect_silent(test3[["paddock"]])

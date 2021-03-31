@@ -20,7 +20,7 @@ trace_asco(
   primary_infection_foci = "random",
   primary_infection_intensity = 1,
   n_foci = 1,
-  spores_per_gp_per_wet_hour = 0.22
+  spores_per_infective_gp_per_wet_hour = 0.22
 )
 }
 \arguments{
@@ -72,7 +72,7 @@ described by the number of number of sporulating growing points.}
 \item{n_foci}{only relevant when primary_infection_foci = "random" and notes the number
 of primary_infection_foci at initial infection.}
 
-\item{spores_per_gp_per_wet_hour}{Number of spores produced per sporulating growing point each wet hour.
+\item{spores_per_infective_gp_per_wet_hour}{Number of spores produced per sporulating growing point each wet hour.
 Also known as the 'spore_rate'. Value is dependent on the susceptibility of the host genotype.}
 }
 \value{

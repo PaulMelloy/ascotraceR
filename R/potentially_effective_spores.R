@@ -1,17 +1,17 @@
 #' Estimate the potentially infective spores
 #'
 #' @param infected_source_address vector of length two giving the paddock coordinates with ascochyta infection
-#' @param spores_per_gp_per_wet_hour estimated number of spores produced in one hour from a single chickpea growing point
+#' @param spores_per_infective_gp_per_wet_hour estimated number of spores produced in one hour from a single chickpea growing point
 #' @param max_interception_probability maximum interception probability
 #' @param paddock_infected_gp integer value giving number of infected growing points per paddock
 #'
 #' @return a double providing the potentially infective spores at the paddock_infected_gp coordinates
 #' @noRd
 #' @examples
-#' potentially_effective_spores(spores_per_gp_per_wet_hour = 0.22,  # default parameter of the model
+#' potentially_effective_spores(spores_per_infective_gp_per_wet_hour = 0.22,  # default parameter of the model
 #'   max_interception_probability = 1,
 #'   paddock_infected_gp = 0) # number of infected growing points at coordinates
-potentially_effective_spores <- function(spores_per_gp_per_wet_hour,
+potentially_effective_spores <- function(spores_per_infective_gp_per_wet_hour,
                                          max_interception_probability,
                                          paddock_infected_gp) {
 
@@ -20,13 +20,13 @@ potentially_effective_spores <- function(spores_per_gp_per_wet_hour,
     return(0)
   } else{
     expected_effective_spores <-
-      spores_per_gp_per_wet_hour *
+      spores_per_infective_gp_per_wet_hour *
       max_interception_probability *
       paddock_infected_gp
 
     if(expected_effective_spores < 0) {
       stop("Function 'potentially_effective_spores() returning negative values\n
-           Check parameters spores_per_gp_per_wet_hour and max_interception_probability")
+           Check parameters spores_per_infective_gp_per_wet_hour and max_interception_probability")
     }else{
 
     p_e_s <-
