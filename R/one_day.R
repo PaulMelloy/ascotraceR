@@ -7,8 +7,8 @@
 #' @param daily_vals `list` of model variables which have been calculated for days prior to the `i_date`
 #' @param weather_dat `data.table` of weather observations which includes the query date `i_date`
 #' @param max_gp numeric double a function of max_gp_lim x (1 - exp(-0.138629 x seeding_rate))
-#' @param spore_interception_parameter parameter indicating the probability of a spore
-#'   landing on a susceptible growing point
+#' @param spore_interception_parameter the parameter which controls the relationship between uninfective
+#' growing points per area and probability of a spore causing an infection
 #' @param spores_per_infective_gp_per_wet_hour Number of spores produced per sporulating growing point each wet hour.
 #'   Also known as the 'spore_rate'. Value is dependent on the susceptibility of the host genotype.
 #'
