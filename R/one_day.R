@@ -55,7 +55,8 @@ one_day <- function(i_date,
   #  for five days.
   max_interception_probability <-
     interception_probability(target_density = 5 * max(daily_vals[["paddock"]][,new_gp]),
-                             k = spore_interception_parameter)
+                             k = spore_interception_parameter) *
+    ceiling(i_rainfall) # rainfall intensity multiplier
 
   # need to make a copy of the data.table otherwise it will modify all data.tables
   # in the following functions
