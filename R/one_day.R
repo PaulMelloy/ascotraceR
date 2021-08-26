@@ -57,8 +57,7 @@ one_day <- function(i_date,
   #  for five days.
   max_interception_probability <-
     interception_probability(target_density = 5 * max(daily_vals[["paddock"]][,new_gp]),
-                             k = spore_interception_parameter) *
-    ceiling(i_rainfall) # rainfall intensity multiplier
+                             k = spore_interception_parameter)
 
   # need to make a copy of the data.table otherwise it will modify all data.tables
   # in the following functions
@@ -82,7 +81,8 @@ if(any(is.na(daily_vals[["paddock"]][,infectious_gp]))){
           paddock = daily_vals[["paddock"]],
           max_interception_probability = max_interception_probability,
           spore_interception_parameter = spore_interception_parameter,
-          spores_per_gp_per_wet_hour = spores_per_gp_per_wet_hour
+          spores_per_gp_per_wet_hour = spores_per_gp_per_wet_hour *
+            ceiling(i_rainfall) # rainfall intensity multiplier
         )
       )
     exposed_dt[, cdd_at_infection := daily_vals[["cdd"]]]
