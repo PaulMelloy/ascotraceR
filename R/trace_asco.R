@@ -35,10 +35,13 @@
 #' @param initial_infection refers to initial or primary infection on seedlings,
 #'  resulting in the production of infected growing points.
 #' @param time_zone refers to time in Coordinated Universal Time (UTC)
-#' @param spores_per_gp_per_wet_hour Number of spores produced per sporulating growing point each wet hour.
-#'   Also known as the 'spore_rate'. Value is dependent on the susceptibility of the host genotype.
-#' @param n_foci only relevant when primary_infection_foci = "random" and notes the number
-#'  of primary_infection_foci at initial infection.
+#' @param spores_per_gp_per_wet_hour Number of spores produced per sporulating
+#'  growing point each wet hour. Also known as the 'spore_rate'. Value is dependent
+#'  on the susceptibility of the host genotype.
+#' @param n_foci only relevant when primary_infection_foci = "random" and notes
+#'  the number of primary_infection_foci at initial infection.
+#' @param wet_hour_requirement number of hours in a day required before a spread
+#'  event can be triggered
 #'
 #' @return a x y `data.frame` simulating the spread of Ascochyta blight in a
 #' chickpea paddock
@@ -299,7 +302,8 @@ trace_asco <- function(weather,
       gp_rr = gp_rr,
       max_gp = max_gp,
       spore_interception_parameter = spore_interception_parameter,
-      spores_per_gp_per_wet_hour = spores_per_gp_per_wet_hour
+      spores_per_gp_per_wet_hour = spores_per_gp_per_wet_hour,
+      wet_hour_requirement = wet_hour_requirement
     )
 
     # When the time of initial infection occurs, infect the paddock coordinates
