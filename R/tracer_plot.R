@@ -33,11 +33,11 @@
 #'   paddock_width = 100,
 #'   initial_infection = "1998-06-10",
 #'   sowing_date = as.POSIXct("1998-06-09"),
-#'   harvest_date = as.POSIXct("1998-06-09") + lubridate::ddays(100),
+#'   harvest_date = as.POSIXct("1998-06-09") + lubridate::ddays(45),
 #'   time_zone = "Australia/Perth",
 #'   primary_infection_foci = "centre")
 #'
-#'   tracer_plot(traced,102)
+#' tracer_plot(traced,45)
 
 
 tracer_plot <- function(dat, day, tiles = "infectious_gp") {
