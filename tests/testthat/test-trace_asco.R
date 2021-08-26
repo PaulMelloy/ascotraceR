@@ -76,11 +76,11 @@ test_that("intense primary_infection_foci lead to more infections",{
                                                                                          by = "days")))
   expect_length(test1.1, 5)
   expect_length(test1.1[[1]], 11)
-  expect_equal(test1.1[[5]][["exposed_gps"]][,.N], 9)
+  expect_equal(test1.1[[5]][["exposed_gps"]][,.N], 634)
   expect_equal(test1.1[[5]][["paddock"]][infectious_gp > 0,infectious_gp], 40)
   expect_length(test1.1[[5]][["paddock"]][infectious_gp > 0,infectious_gp], 1)
-  expect_equal(test1.1[[5]][["exposed_gps"]][spores_per_packet  > 0,spores_per_packet ], rep(1,9))
-  expect_equal(test1.1[[5]][["exposed_gps"]][,unique(cdd_at_infection) ],87)
+  expect_equal(test1.1[[5]][["exposed_gps"]][spores_per_packet  > 0,spores_per_packet ], rep(1,634))
+  expect_equal(test1.1[[5]][["exposed_gps"]][,unique(cdd_at_infection) ],c(69,87))
 
 })
 
@@ -93,7 +93,7 @@ test_that("intense primary_infection_foci lead to more infections",{
 
 # test running for 14 days
 # this will test that the infection intensifies with more days and
-#  that newly infected gp are moved to sporilating gp after the latent period
+#  that newly infected gp are moved to sporulating gp after the latent period
 test2 <- trace_asco(
   weather = newM_weather,
   paddock_length = 100,
@@ -137,7 +137,7 @@ test3 <- trace_asco(
 
 
 test_that("test3 returns some sporulating gps",{
-  expect_equal(test3[[30]][["paddock"]][,sum(infectious_gp)], 1)
+  expect_equal(test3[[30]][["paddock"]][,sum(infectious_gp)], 2)
   expect_length(test3, 30)
   expect_length(test3[[1]], 11)
 })
@@ -164,7 +164,7 @@ test3 <- trace_asco(
 #  tracer_plot(test3,30)
 
 test_that("test3 returns some sporulating gps",{
-  expect_equal(test3[[30]][["paddock"]][,sum(infectious_gp)], 33)
+  expect_equal(test3[[30]][["paddock"]][,sum(infectious_gp)], 44)
   expect_length(test3, 30)
   expect_length(test3[[1]], 11)
   expect_true(all(test3[[30]][["exposed_gps"]][,unique(cdd_at_infection)] > test3[[30]][["cdd"]] - 200))
