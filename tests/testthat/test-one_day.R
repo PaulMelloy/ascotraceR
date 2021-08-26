@@ -66,12 +66,12 @@ test1 <- one_day(i_date = od_t1_i_date,
                  gp_rr = 0.0065,
                  max_gp = max_gp,
                  spore_interception_parameter = spore_interception_parameter,
-                 spores_per_gp_per_wet_hour = 0.22)
+                 spores_per_gp_per_wet_hour = 0.22,
+                 wet_hour_requirement = 1)
 
 
 test_that("one_day single infection foci returns expected output", {
   expect_silent(test1[["paddock"]]) # This line is here due to https://github.com/Rdatatable/data.table/issues/869
-  test1[["paddock"]]
   expect_is(test1, "list")
   expect_length(test1, 11)
   expect_equal(
@@ -98,10 +98,10 @@ test_that("one_day single infection foci returns expected output", {
   expect_equal(test1[["cr"]],78.85 )
   expect_equal(round(test1[["gp_standard"]],5), 44.66747)
   expect_equal(test1[["new_gp"]],test1[["gp_standard"]] - seeding_rate)
-  expect_equal(test1[["exposed_gps"]], data.table(x = c(50,54,50),
-                                                     y = c(49,37,50),
-                                                     spores_per_packet = c(1,1,1),
-                                                     cdd_at_infection = c(18,18,18)))
+  expect_equal(test1[["exposed_gps"]][1:5], data.table(x = c(55,50,54,52,49),
+                                                     y = c(51,50,51,53,49),
+                                                     spores_per_packet = c(1,1,1,1,1),
+                                                     cdd_at_infection = c(18,18,18,18,18)))
   expect_is(test1[["paddock"]], "data.table")
   expect_equal(
     colnames(test1[["paddock"]]),
@@ -127,7 +127,8 @@ test2 <- one_day(i_date = od_t1_i_date,
                  gp_rr = 0.0065,
                  max_gp = max_gp,
                  spore_interception_parameter = spore_interception_parameter,
-                 spores_per_gp_per_wet_hour = 0.22)
+                 spores_per_gp_per_wet_hour = 0.22,
+                 wet_hour_requirement = 2)
 
 test_that("one_day test2 repeat using test1 single infection foci returns expected output", {
   expect_silent(test2[["paddock"]]) # This line is here due to https://github.com/Rdatatable/data.table/issues/869
@@ -158,10 +159,10 @@ test_that("one_day test2 repeat using test1 single infection foci returns expect
   expect_equal(test2[["cr"]],78.85 +78.85)
   expect_equal(round(test2[["gp_standard"]],5), 44.66747 + 5.21047)
   expect_equal(round(test2[["new_gp"]],5),5.21047)
-  expect_equal(test2[["exposed_gps"]], data.table(x = c(50,54,50),
-                                                     y = c(49,37,50),
-                                                     spores_per_packet = c(1,1,1),
-                                                     cdd_at_infection = c(18,18,18)))
+  expect_equal(test2[["exposed_gps"]][1:5], data.table(x = c(55,50,54,52,49),
+                                                     y = c(51,50,51,53,49),
+                                                     spores_per_packet = c(1,1,1,1,1),
+                                                     cdd_at_infection = c(18,18,18,18,18)))
   expect_is(test2[["paddock"]], "data.table")
   expect_equal(
     colnames(test2[["paddock"]]),
@@ -190,7 +191,8 @@ test3 <- one_day(i_date = od_t1_i_date,
                     gp_rr = 0.0065,
                     max_gp = max_gp,
                     spore_interception_parameter = spore_interception_parameter,
-                 spores_per_gp_per_wet_hour = 0.22)
+                 spores_per_gp_per_wet_hour = 0.22,
+                 wet_hour_requirement = 2)
 
 test_that("one_day test3 adds to cumulative degree days and passes latent period", {
   expect_silent(test3[["paddock"]])
@@ -221,10 +223,10 @@ test_that("one_day test3 adds to cumulative degree days and passes latent period
   expect_equal(test3[["cr"]], 78.85 + 78.85 + 78.85)
   expect_equal(round(test3[["gp_standard"]],5), 44.66747 + 5.21047 + 5.81624)
   expect_equal(round(test3[["new_gp"]],5),5.81624)
-  expect_equal(test3[["exposed_gps"]], data.table(x = numeric(),
-                                                     y = numeric(),
-                                                     spores_per_packet = numeric(),
-                                                     cdd_at_infection = numeric()))
+  expect_equal(test3[["exposed_gps"]][14:17], data.table(x = c(50,49,60,50),
+                                                     y = c(66,51,74,49),
+                                                     spores_per_packet = c(1,1,1,1),
+                                                     cdd_at_infection = c(36,36,219,219)))
   expect_is(test3[["paddock"]], "data.table")
   expect_equal(
     colnames(test3[["paddock"]]),
@@ -238,9 +240,9 @@ test_that("one_day test3 adds to cumulative degree days and passes latent period
       "cdd_at_infection"
     )
   )
-  expect_equal(round(test3[["paddock"]][,unique(new_gp)],6), c( 5.816238, 5.700011, 5.555145))
-  expect_equal(round(test3[["paddock"]][,unique(susceptible_gp)],5), c(55.69418, 54.57795, 53.18686))
+  expect_equal(round(test3[["paddock"]][,unique(new_gp)],6), c( 5.816238, 5.700011, 5.467511, 5.583769, 4.653267, 3.343491, 5.351237, 5.118643, 5.002323, 5.234948))
+  expect_equal(round(test3[["paddock"]][,unique(susceptible_gp)],5), c(55.69418, 54.57795, 52.34545, 53.46171, 44.53121, 31.97521, 51.22918, 48.99658, 47.88026, 50.11289))
   expect_equal(round(test3[["paddock"]][,unique(exposed_gp)],6), 0)
-  expect_equal(round(test3[["paddock"]][,unique(infectious_gp)],6), c(0 ,1,2))
+  expect_equal(round(test3[["paddock"]][,unique(infectious_gp)],6), c(0 ,1,3,2,10,21,4,6,7,5))
 })
 
