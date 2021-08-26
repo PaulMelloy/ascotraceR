@@ -20,7 +20,8 @@ trace_asco(
   primary_infection_foci = "random",
   primary_infection_intensity = 1,
   n_foci = 1,
-  spores_per_gp_per_wet_hour = 0.22
+  spores_per_gp_per_wet_hour = 0.22,
+  wet_hour_requirement = 1
 )
 }
 \arguments{
@@ -70,11 +71,15 @@ coordinates with colnames c("x","y"), a three column data.table where the third}
 \item{primary_infection_intensity}{The intensity of the starting epidemic as
 described by the number of number of sporulating growing points.}
 
-\item{n_foci}{only relevant when primary_infection_foci = "random" and notes the number
-of primary_infection_foci at initial infection.}
+\item{n_foci}{only relevant when primary_infection_foci = "random" and notes
+the number of primary_infection_foci at initial infection.}
 
-\item{spores_per_gp_per_wet_hour}{Number of spores produced per sporulating growing point each wet hour.
-Also known as the 'spore_rate'. Value is dependent on the susceptibility of the host genotype.}
+\item{spores_per_gp_per_wet_hour}{Number of spores produced per sporulating
+growing point each wet hour. Also known as the 'spore_rate'. Value is dependent
+on the susceptibility of the host genotype.}
+
+\item{wet_hour_requirement}{number of hours in a day required before a spread
+event can be triggered}
 }
 \value{
 a x y \code{data.frame} simulating the spread of Ascochyta blight in a
@@ -111,13 +116,12 @@ traced <- trace_asco(
   paddock_width = 100,
   initial_infection = "1998-06-10",
   sowing_date = as.POSIXct("1998-06-09"),
-  harvest_date = as.POSIXct("1998-06-09") + lubridate::ddays(70),
+  harvest_date = as.POSIXct("1998-06-09") + lubridate::ddays(5),
   time_zone = "Australia/Perth",
   gp_rr = 0.0065,
-  primary_infection_intensity = 1000,
+  seeding_rate = 40,
+  primary_infection_intensity = 40,
   spores_per_gp_per_wet_hour = 0.22,
   primary_infection_foci = "centre")
-  traced[[70]]
-
-write.csv(traced[[70]]$paddock, "testrun2.csv", row.names = FALSE)
+  traced[[5]]
 }
