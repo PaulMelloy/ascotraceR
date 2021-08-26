@@ -29,7 +29,8 @@ one_day <- function(i_date,
                     gp_rr,
                     max_gp,
                     spore_interception_parameter,
-                    spores_per_gp_per_wet_hour) {
+                    spores_per_gp_per_wet_hour,
+                    wet_hour_requirement) {
 
   times <- temp <- wet_hours <- rain <- new_gp <- infectious_gp <-
     cdd_at_infection <- susceptible_gp <- NULL
