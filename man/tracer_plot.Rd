@@ -2,7 +2,7 @@
 % Please edit documentation in R/tracer_plot.R
 \name{tracer_plot}
 \alias{tracer_plot}
-\title{plot one day from trace_asco output as a tile plot}
+\title{Plot trace_asco output}
 \usage{
 tracer_plot(dat, day, tiles = "infectious_gp")
 }
@@ -17,10 +17,12 @@ tracer_plot(dat, day, tiles = "infectious_gp")
 ggplot2 object
 }
 \description{
-plot one day from trace_asco output as a tile plot
+Wrapper function which takes the output object of a trace_asco
+and plots a snapshot at a point in time (day) using ggplot::geom_tile(),
+effectively producing a heat-map
 }
 \examples{
-# First weather data needs to be imported and formated with `format_weather`
+# First weather data needs to be imported and formatted with `format_weather`
 Newmarracarra <-
    read.csv(system.file("extdata",
             "1998_Newmarracarra_weather_table.csv", package = "ascotraceR"))
@@ -50,4 +52,13 @@ traced <- trace_asco(
   primary_infection_foci = "centre")
 
 tracer_plot(traced,45)
+tracer_plot(traced,45) +
+  ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "red")
+tracer_plot(traced,45) +
+  ggplot2::scale_fill_viridis_b()
+
+tracer_plot(traced,45, tiles = "susceptible_gp") +
+  ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "palegreen4")
+tracer_plot(traced,45, tiles = "percent_gp_sporulating") +
+  ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "red")
 }
