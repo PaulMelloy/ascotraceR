@@ -38,6 +38,15 @@
 #'   primary_infection_foci = "centre")
 #'
 #' tracer_plot(traced,45)
+#' tracer_plot(traced,45) +
+#'   ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "red")
+#' tracer_plot(traced,45) +
+#'   ggplot2::scale_fill_viridis_b()
+#'
+#' tracer_plot(traced,45, tiles = "susceptible_gp") +
+#'   ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "palegreen4")
+#' tracer_plot(traced,45, tiles = "percent_gp_sporulating") +
+#'   ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "red")
 
 
 tracer_plot <- function(dat, day, tiles = "infectious_gp") {
@@ -49,24 +58,21 @@ tracer_plot <- function(dat, day, tiles = "infectious_gp") {
 
   if (tiles == "infectious_gp") {
     p1 <- ggplot2::ggplot(data = dat1, ggplot2::aes(x, y)) +
-      ggplot2::geom_tile(ggplot2::aes(fill = infectious_gp)) +
-      ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "red")
+      ggplot2::geom_tile(ggplot2::aes(fill = infectious_gp))
     print(p1)
     return(p1)
   }
 
   if (tiles == "susceptible_gp") {
     p1 <- ggplot2::ggplot(data = dat1, ggplot2::aes(x, y)) +
-      ggplot2::geom_tile(ggplot2::aes(fill = susceptible_gp)) +
-      ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "palegreen4")
+      ggplot2::geom_tile(ggplot2::aes(fill = susceptible_gp))
     print(p1)
     return(p1)
   }
 
   if (tiles == "percent_gp_sporulating") {
     p1 <- ggplot2::ggplot(data = dat1, ggplot2::aes(x, y)) +
-      ggplot2::geom_tile(ggplot2::aes(fill = infectious_gp / (infectious_gp + susceptible_gp))) +
-      ggplot2::scale_fill_gradient(low = "lightgoldenrod", high = "red")
+      ggplot2::geom_tile(ggplot2::aes(fill = infectious_gp / (infectious_gp + susceptible_gp)))
     print(p1)
     return(p1)
   }
