@@ -1,4 +1,8 @@
-#' plot one day from trace_asco output as a tile plot
+#' Plot trace_asco output
+#'
+#' @description Wrapper function which takes the output object of a trace_asco
+#'  and plots a snapshot at a point in time (day) using ggplot::geom_tile(),
+#'  effectively producing a heat-map
 #'
 #' @param dat nested list of ascotraceR class
 #' @param day integer, day of the simulation to plot
@@ -8,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' # First weather data needs to be imported and formated with `format_weather`
+#' # First weather data needs to be imported and formatted with `format_weather`
 #' Newmarracarra <-
 #'    read.csv(system.file("extdata",
 #'             "1998_Newmarracarra_weather_table.csv", package = "ascotraceR"))
