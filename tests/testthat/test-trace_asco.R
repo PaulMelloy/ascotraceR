@@ -130,7 +130,7 @@ test_that("intense primary_infection_foci lead to more infections", {
   expect_length(test2[[1]], 11)
   expect_equal(test2[[5]][["exposed_gps"]][, .N], 0)
   expect_equal(test2[[5]][["paddock"]][exposed_gp > 0, .N], 0)
-  expect_equal(test2[[5]][["paddock"]][infectious_gp > 0, infectious_gp], 1)
+  expect_equal(test2[[5]][["paddock"]][infectious_gp > 0, infectious_gp], 20)
   expect_length(test2[[5]][["paddock"]][infectious_gp > 0, infectious_gp], 1)
   expect_equal(test2[[5]][["exposed_gps"]][spores_per_packet  >
                                              0, spores_per_packet], vector(mode = "numeric"))
@@ -153,11 +153,22 @@ test3 <- trace_asco(
 
 
 test_that("test3 returns some sporulating gps", {
-  expect_equal(test3[[30]][["paddock"]][, sum(infectious_gp)], 1)
+  expect_equal(test3[[30]][["paddock"]][, sum(infectious_gp)], 20)
   expect_length(test3, 30)
   expect_length(test3[[1]], 11)
 })
 
+# test the function runs without error a late initial infection
+test3 <- trace_asco(
+  weather = newM_weather,
+  paddock_length = 100,
+  paddock_width = 100,
+  initial_infection = "1998-03-20",
+  sowing_date = "1998-03-09",
+  harvest_date = "1998-04-06",
+  time_zone = "Australia/Perth",
+  primary_infection_foci = "centre"
+)
 
 # test running for 28 days with multiple (10) random start locations
 pdk <- CJ(x = 1:100,
