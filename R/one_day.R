@@ -98,10 +98,38 @@ one_day <- function(i_date,
   daily_vals$cwh <- sum(daily_vals$cwh, i_wet_hours)
   daily_vals$cr <- sum(daily_vals$cr, i_rainfall)
 
+  # Establish the effect of the fungicide protection in days
+  #  This reduces the susceptible days number which is a multipier in spores_each_wet_hour
+  #  Thereby reducing the multiplier effect
+  if(isFALSE(is.null(fungicide_dates))){
   # determine fungicide application dates which would prevent new infections
-  fungicide_protection <- seq(from = i_date - lubridate::days(susceptible_days - 1),
-                              to = i_date,
-                              by = "days")
+  fungicide_protection <-
+    as.integer(
+      round(
+        difftime(i_date, .vali_date(fungicide_dates),
+               units = "days")))
+
+  # get the difference in days
+  fungicide_protection <-
+    fungicide_protection[fungicide_protection >= 0 &
+                           fungicide_protection <= susceptible_days]
+
+  # check fungicide_protection is an integer length one
+  if (length(fungicide_protection) > 1) {
+    stop(
+      "Fungicide applications occur within too short of an interval\n",
+      " within less than ",
+      susceptible_days,
+      " days of each other.\n",
+      "Please specify fungicide application dates with intervals greater than 'susceptible days"
+    )
+  }
+  if (length(fungicide_protection) == 1) {
+    # replace suceptible_days with 'days since fungicide applied' to reduce the
+    #  susceptible_days multiplier accordingly
+    susceptible_days <- fungicide_protection
+  }
+  }
 
   # max new growing points are multiplied by five as growing points remain
   # susceptible for five days.
@@ -120,9 +148,9 @@ one_day <- function(i_date,
   }
 
   # Don't spread spores if there are no infected coordinates
-  # Don't spread if in fungicide protection period
+  # Don't spread if in fungicide protection period causes 0 interception probability
   if (nrow(daily_vals[["infected_coords"]]) > 0 &
-      isFALSE(any(.vali_date(fungicide_dates) %in% fungicide_protection))) {
+      max_interception_probability > 0) {
     # Spread spores and infect plants
     # Update growing points for paddock coordinates
     if (i_rainfall > daily_rain_threshold) {
