@@ -416,11 +416,11 @@ trace_asco <- function(weather,
 #' @keywords internal
 #' @noRd
 #'
-.vali_date <- function(x) {
+.vali_date <- function(x, ...) {
   tryCatch(
     # try to parse the date format using lubridate
-    x <- lubridate::parse_date_time(x,
-                                    c(
+    x <- lubridate::parse_date_time(x = x,
+                                    orders = c(
                                       "Ymd",
                                       "dmY",
                                       "mdY",
@@ -428,7 +428,7 @@ trace_asco <- function(weather,
                                       "Bdy",
                                       "bdY",
                                       "bdy"
-                                    )),
+                                    ), ...),
     warning = function(w) {
       stop(call. = FALSE,
            "`",
