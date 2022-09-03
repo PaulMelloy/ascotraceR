@@ -121,7 +121,7 @@ one_day <- function(i_date,
       " within less than ",
       susceptible_days,
       " days of each other.\n",
-      "Please specify fungicide application dates with intervals greater than 'susceptible days"
+      "Please specify fungicide application dates with intervals greater than 'susceptible days'"
     )
   }
   if (length(fungicide_protection) == 1) {
