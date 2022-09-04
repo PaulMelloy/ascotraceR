@@ -128,3 +128,56 @@ ggplot(data = subset(tidied, i_day == 132),
        aes(x = x, y = y, fill = infectious_gp)) +
   geom_tile()
 ```
+
+### Simulate fungicide applications  
+
+The function, `trace_asco()`, also can simulate the effect of preventative fungicides.
+`fungicide_dates` protect chick pea growing points prior to the specified date/s
+preventing them from being *exposed* and *infective*. 
+All growing points maturing after fungicide dates are not protected.
+
+```{r trace-asco}
+# Predict Ascochyta blight spread for the year 2020 at Billa Billa
+fp_trace <- trace_asco(
+  weather = Billa_Billa,
+  paddock_length = 20,
+  paddock_width = 20,
+  initial_infection = "2020-07-17",
+  sowing_date = "2020-06-04",
+  harvest_date = "2020-10-27",
+  time_zone = "Australia/Brisbane",
+  seeding_rate = 40,
+  gp_rr = 0.0065,
+  spores_per_gp_per_wet_hour = 0.6,
+  latent_period_cdd = 150,
+  primary_inoculum_intensity = 100,
+  primary_infection_foci = "centre",
+  fungicide_dates = c("2020-07-25","2020-08-07")
+)
+```
+
+To show the effect the outputs are summarised and compared in a line plot.
+
+```{r}
+# summarise output
+fp_summary <- summarise_trace(fp_trace)
+
+# plot original simulation without fungicide
+plot(
+  y = summarised$infectious_gp / summarised$susceptible_gp,
+  x = summarised$i_date,
+  type = "l",
+  ylab = "Percent infectious growing points",
+  xlab = "Dates"
+)
+# overlay simulation with fungicide
+lines(
+  y = fp_summary$infectious_gp / fp_summary$susceptible_gp,
+  x = fp_summary$i_date,
+  type = "l",
+  col = "purple"
+)
+# add a vertical line to show fungicide application date
+abline(v = as.Date(c("2020-07-25","2020-08-07")), col = "blue")
+```
+
