@@ -1,4 +1,16 @@
 # ascotraceR 0.1.0
+## Minor changes  
+
+* Add functionality for preventative fungicide sprays
+
+* Update vignette to show fungicide spray functionality
+
+* improvement to moisture requirements for spread `daily_rain_threshold` to require
+24 hours not a rainfall in a single day
+
+## patch  
+
+* update to minor formatting errors
 
 # ascotraceR 0.0.2
 ## Minor changes
