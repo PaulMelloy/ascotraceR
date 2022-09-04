@@ -321,6 +321,10 @@ trace_asco <- function(weather,
                                    cdd_at_infection = numeric()) # data.table of infected growing points still in latent period and not sporulating (exposed_gp)
     )
   )
+  # create a rolling sum column to determine if daily rainfall threshold is met
+  weather[, rain_sum := frollsum(rain,
+                                 fill = 0,
+                                 n = 24)]
 
   time_increments <- seq(sowing_date,
                          harvest_date,
