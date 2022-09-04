@@ -112,19 +112,15 @@ one_day <- function(i_date,
 
   # Don't spread spores if there are no infected coordinates
   if (nrow(daily_vals[["infected_coords"]]) > 0) {
-    # filter to hours which meet moisture requirements for spread
-    weather_spread_hours <-
-      weather_day[rain_sum >= daily_rain_threshold &
-                    rain >= hourly_rain_threshold,]
     # Spread spores and infect plants
     # Update growing points for paddock coordinates
-    if (nrow(weather_spread_hours) > 0) {
+    if (i_rainfall > daily_rain_threshold) {
       exposed_dt <-
         rbindlist(
           lapply(
-            seq_len(nrow(weather_spread_hours)),
+            seq_len(nrow(weather_day[rain >= hourly_rain_threshold,])),
             FUN = spores_each_wet_hour,
-            weather_hourly = weather_spread_hours,
+            weather_hourly = weather_day[rain >= hourly_rain_threshold,],
             paddock = daily_vals$paddock,
             max_interception_probability = max_interception_probability,
             spore_interception_parameter = spore_interception_parameter,
