@@ -156,7 +156,7 @@ trace_asco <- function(weather,
                        fungicide_dates = NULL){
 
 
-  x <- y <- load <- susceptible_gp <- NULL
+  x <- y <- load <- susceptible_gp <- rain <- rain_sum <- NULL
 
   if (!"asco.weather" %in% class(weather)) {
     stop(
