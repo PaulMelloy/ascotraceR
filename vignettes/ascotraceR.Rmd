@@ -136,7 +136,7 @@ The function, `trace_asco()`, also can simulate the effect of preventative fungi
 preventing them from being *exposed* and *infective*. 
 All growing points maturing after fungicide dates are not protected.
 
-```{r trace-asco}
+```{r trace-asco-fungicide}
 # Predict Ascochyta blight spread for the year 2020 at Billa Billa
 fp_trace <- trace_asco(
   weather = Billa_Billa,
@@ -158,7 +158,7 @@ fp_trace <- trace_asco(
 
 To show the effect the outputs are summarised and compared in a line plot.
 
-```{r}
+```{r plot-fungicide}
 # summarise output
 fp_summary <- summarise_trace(fp_trace)
 
