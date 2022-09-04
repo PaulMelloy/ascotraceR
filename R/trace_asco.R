@@ -325,6 +325,11 @@ trace_asco <- function(weather,
     )
   )
 
+  # create a rolling sum column to determine if daily rainfall threshold is met
+  weather[, rain_sum := frollsum(rain,
+                                 fill = 0,
+                                 n = 24)]
+
   time_increments <- seq(sowing_date,
                          harvest_date,
                          by = "days")
