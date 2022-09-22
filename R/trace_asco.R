@@ -49,7 +49,7 @@
 #' @param spores_per_gp_per_wet_hour number of spores produced per infectious
 #'   growing point during each wet hour. Also known as the `spore_rate`. Value
 #'   is dependent on the susceptibility of the host genotype.
-#' @param n_foci Quantifies the number of primary infection foci. The value is
+#' @param n_infection_foci Quantifies the number of primary infection foci. The value is
 #'   `1` when `primary_infection_foci = "centre"` and can be greater than `1` if
 #'   `primary_infection_foci = "random`.
 #' @param splash_cauchy_parameter a parameter used in the Cauchy distribution
@@ -148,11 +148,11 @@ trace_asco <- function(weather,
                        time_zone = "UTC",
                        primary_infection_foci = "random",
                        primary_infection_intensity = 10,
-                       n_foci = 1,
+                       n_infection_foci = 1,
                        stubble_inoculum_coords = "random",
                        stubble_innoculum_intensity = 0,
                        stubble_innoculum_decay = 1,
-                       n_stubble_coords = 1,
+                       n_stubble_foci = 1,
                        spores_per_gp_per_wet_hour = 0.22,
                        splash_cauchy_parameter = 0.5,
                        wind_cauchy_multiplier = 0.015,
@@ -172,11 +172,12 @@ trace_asco <- function(weather,
       "Please use `format_weather()` to properly format the weather data.")
   }
 
-  if (primary_infection_intensity <= 0) {
+  if (primary_infection_intensity < 0|
+      stubble_innoculum_intensity < 0) {
     stop(
       call. = FALSE,
-      "`primary_infection_intensity` has to be > 0 for the model to simulate",
-      " disease spread"
+      "`primary_infection_intensity` or `stubble_innoculum_intensity` has to",
+      " be > 0 for the model to simulate disease spread"
     )
   }
 
@@ -217,12 +218,12 @@ trace_asco <- function(weather,
                 y = 1:paddock_length)
 
   # sample a paddock location randomly if a starting foci is not given
-  if ("data.frame" %in% class(primary_infection_foci) == FALSE) {
+  if (inherits(primary_infection_foci,"data.frame") == FALSE) {
     if (inherits(primary_infection_foci, "character")) {
       if (primary_infection_foci == "random") {
         primary_infection_foci <-
           paddock[sample(seq_len(nrow(paddock)),
-                         size = n_foci,
+                         size = n_infection_foci,
                          replace = TRUE),
                   c("x", "y")]
 
@@ -271,6 +272,61 @@ trace_asco <- function(weather,
     }
   }
 
+  # Define the location of stubble inoculum from stubble_inoculum_coords
+  if (inherits(stubble_inoculum_coords,"data.frame") == FALSE) {
+    if (inherits(stubble_inoculum_coords, "character")) {
+      if (stubble_inoculum_coords == "random") {
+        stubble_inoculum_coords <-
+          paddock[sample(seq_len(nrow(paddock)),
+                         size = n_stubble_foci,
+                         replace = TRUE),
+                  c("x", "y")]
+
+      } else {
+        if (stubble_inoculum_coords == "centre" ||
+            stubble_inoculum_coords == "center") {
+          stubble_inoculum_coords <-
+            paddock[x == as.integer(round(paddock_width / 2)) &
+                      y == as.integer(round(paddock_length / 2)),
+                    c("x", "y")]
+        } else{
+          stop(call. = FALSE,
+               "`stubble_inoculum_coords` input not recognised")
+        }
+      }
+    } else {
+      if (is.vector(stubble_inoculum_coords)) {
+        if (length(stubble_inoculum_coords) != 2 |
+            is.numeric(stubble_inoculum_coords) == FALSE) {
+          stop(
+            call. = FALSE,
+            "`stubble_inoculum_coords` should be supplied as a numeric vector ",
+            "of length two"
+          )
+        }
+        stubble_inoculum_coords <-
+          as.data.table(as.list(stubble_inoculum_coords))
+
+        setnames(x = stubble_inoculum_coords,
+                 old = c("V1", "V2"),
+                 new = c("x", "y"),
+                 skip_absent = TRUE)
+      }
+    }
+  } else{
+    if (is.data.table(stubble_inoculum_coords) == FALSE &
+        is.data.frame(stubble_inoculum_coords)) {
+      setDT(stubble_inoculum_coords)
+      if (all(c("x", "y") %in% colnames(stubble_inoculum_coords)) == FALSE) {
+        stop(
+          call. = FALSE,
+          "The `stubble_inoculum_coords` data.frame should contain colnames ",
+          "'x' and 'y'"
+        )
+      }
+    }
+  }
+
 
   # get rownumbers for paddock data.table that need to be set as infected
   infected_rows <- which_paddock_row(paddock = paddock,
@@ -284,6 +340,17 @@ trace_asco <- function(weather,
     }
   }
 
+  # get rownumbers for paddock data.table that need to be set as infected
+  stubble_rows <- which_paddock_row(paddock = paddock,
+                                    query = stubble_inoculum_coords)
+  if ("load" %in% colnames(stubble_inoculum_coords) == FALSE) {
+    stubble_inoculum_coords[, load := stubble_innoculum_intensity]
+  } else{
+    if (all(colnames(stubble_inoculum_coords) %in% c("x", "y"))) {
+      stop(call. = FALSE,
+           "Colnames for `stubble_inoculum_coords` are not 'x', 'y' & 'load'.")
+    }
+  }
 
   # define paddock variables at time 1
   # need to update so can assign a data.table of things primary infection foci!!
