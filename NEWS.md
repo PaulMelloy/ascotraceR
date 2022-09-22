@@ -1,3 +1,9 @@
+# ascotraceR 0.1.1
+## patch  
+
+* Add checks for if weather data includes simulation start and end days, 
+see issue #8
+
 # ascotraceR 0.1.0
 ## Minor changes  
 
