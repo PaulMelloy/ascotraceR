@@ -173,6 +173,17 @@ trace_asco <- function(weather,
     )
   }
 
+  if(first(weather$times) > sowing_date) {
+    stop(call. = FALSE,
+         "Insuficent weather data:",
+         "'sowing_date' occurs before the first 'weather' data record")
+  }
+  if(last(weather$times) < harvest_date) {
+    stop(call. = FALSE,
+         "Insuficent weather data:",
+         "'harvest_date' occurs after the last 'weather' data record")
+  }
+
   # convert times to POSIXct -----------------------------------------------
   initial_infection <-
     lubridate::ymd(.vali_date(initial_infection), tz = time_zone) +
