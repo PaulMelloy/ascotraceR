@@ -154,7 +154,7 @@ one_day <- function(i_date,
   # Don't spread spores if there are no infected coordinates
   # Don't spread if in fungicide protection period causes 0 interception probability
   if ((nrow(daily_vals[["infected_coords"]]) > 0 |
-      "stubble_lesions" %in% colnames(daily_vals$paddock)) &
+       daily_vals$paddock[, sum(stubble_lesions)] > 0) &
       max_interception_probability > 0) {
     # filter to hours which meet moisture requirements for spread
     weather_spread_hours <-
@@ -185,9 +185,11 @@ one_day <- function(i_date,
         rbind(daily_vals$exposed_gps,
               exposed_dt)
 
-      # Decay stubble if rainfall conditions are met
-      daily_vals$paddock[ , stubble_lesions := stubble_lesions * stubble_decay]
+    }
 
+    if(i_rainfall >= 1) {
+      # Decay stubble if rainfall conditions are met
+      daily_vals$paddock[, stubble_lesions := stubble_lesions * stubble_decay]
     }
 
     # exposed gps which have undergone latent period are moved to sporulating gps
