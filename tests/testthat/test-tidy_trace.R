@@ -13,7 +13,7 @@ tidy_test <- tidy_trace(
 
 test_that("tidy_trace() produces expected output", {
   expect_s3_class(tidy_test, c("data.table", "data.frame"))
-  expect_equal(length(tidy_test), 13)
+  expect_equal(length(tidy_test), 14)
   expect_equal(nrow(tidy_test), 50000)
   expect_named(
     tidy_test,
@@ -26,7 +26,8 @@ test_that("tidy_trace() produces expected output", {
       "new_gp",
       "susceptible_gp",
       "exposed_gp",
-      "infectious_gp",
+      "infectious_gp",,
+      "stubble_lesions"
       "cdd",
       "cwh",
       "cr",
