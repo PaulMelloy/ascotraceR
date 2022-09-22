@@ -18,7 +18,7 @@ trace_asco(
   latent_period_cdd = 150,
   time_zone = "UTC",
   primary_infection_foci = "random",
-  primary_inoculum_intensity = 20,
+  primary_infection_intensity = 20,
   n_foci = 1,
   spores_per_gp_per_wet_hour = 0.22,
   splash_cauchy_parameter = 0.5,
@@ -76,10 +76,10 @@ infection starts. Accepted inputs are: \code{centre}/\code{center} or \code{rand
 (Default) or a \code{data.frame} with column names \sQuote{x}, \sQuote{y} and
 \sQuote{load}. The \code{data.frame} inputs inform the model of specific grid
 cell/s coordinates where the epidemic should begin. The \sQuote{load}
-column is optional and can specify the \code{primary_inoculum_intensity} for
+column is optional and can specify the \code{primary_infection_intensity} for
 each coordinate.}
 
-\item{primary_inoculum_intensity}{Refers to the amount of primary inoculum as
+\item{primary_infection_intensity}{Refers to the amount of primary inoculum as
 lesions on infested chickpea stubble for initiating disease. The sources of
 primary inoculum can be infected seed, volunteer chickpea plants or
 infested stubble from the previous seasons. Defaults to \code{200}.}
@@ -179,7 +179,7 @@ traced <- trace_asco(
   harvest_date = "1998-06-30",
   time_zone = "Australia/Perth",
   gp_rr = 0.0065,
-  primary_inoculum_intensity = 40,
+  primary_infection_intensity = 40,
   spores_per_gp_per_wet_hour = 0.22,
   primary_infection_foci = "centre")
 

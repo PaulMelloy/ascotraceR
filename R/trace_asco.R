@@ -25,17 +25,20 @@
 #'   allowed per square metre. Defaults to `5000`.
 #' @param max_new_gp Maximum number of new chickpea growing points (meristems),
 #'   which develop per day, per square metre. Defaults to `350`.
-#' @param primary_infection_foci refers to the inoculated coordinates where the
-#'   infection starts. Accepted inputs are: `centre`/`center` or `random`
+#' @param primary_infection_foci refers to the coordinates where the infection
+#'   is first observed. Accepted inputs are: `centre`/`center` or `random`
 #'   (Default) or a `data.frame` with column names \sQuote{x}, \sQuote{y} and
 #'   \sQuote{load}. The `data.frame` inputs inform the model of specific grid
-#'   cell/s coordinates where the epidemic should begin. The \sQuote{load}
-#'   column is optional and can specify the `primary_inoculum_intensity` for
+#'   cell/s coordinates where the epidemic begins. The \sQuote{load}
+#'   column is optional and can specify the `primary_infection_intensity` for
 #'   each coordinate.
-#' @param primary_inoculum_intensity Refers to the amount of primary inoculum as
+#' @param primary_infection_intensity Refers to the amount of primary inoculum as
 #'   lesions on infested chickpea stubble for initiating disease. The sources of
 #'   primary inoculum can be infected seed, volunteer chickpea plants or
-#'   infested stubble from the previous seasons. Defaults to `200`.
+#'   infested stubble from the previous seasons. Defaults to `10`.
+#' @stubble_innoculum_intensity
+#' @stubble_inoculum_coords
+#' @stubble_innoculum_decay
 #' @param latent_period_cdd latent period in cumulative degree days (sum of
 #'   daily temperature means) is the period between infection and production of
 #'   lesions on susceptible growing points. Defaults to `150`.
@@ -123,7 +126,7 @@
 #'   harvest_date = "1998-06-30",
 #'   time_zone = "Australia/Perth",
 #'   gp_rr = 0.0065,
-#'   primary_inoculum_intensity = 40,
+#'   primary_infection_intensity = 40,
 #'   spores_per_gp_per_wet_hour = 0.22,
 #'   primary_infection_foci = "centre")
 #'
@@ -144,8 +147,12 @@ trace_asco <- function(weather,
                        latent_period_cdd = 150,
                        time_zone = "UTC",
                        primary_infection_foci = "random",
-                       primary_inoculum_intensity = 20,
+                       primary_infection_intensity = 10,
                        n_foci = 1,
+                       stubble_inoculum_coords = "random",
+                       stubble_innoculum_intensity = 0,
+                       stubble_innoculum_decay = 1,
+                       n_stubble_coords = 1,
                        spores_per_gp_per_wet_hour = 0.22,
                        splash_cauchy_parameter = 0.5,
                        wind_cauchy_multiplier = 0.015,
@@ -165,10 +172,10 @@ trace_asco <- function(weather,
       "Please use `format_weather()` to properly format the weather data.")
   }
 
-  if (primary_inoculum_intensity <= 0) {
+  if (primary_infection_intensity <= 0) {
     stop(
       call. = FALSE,
-      "`primary_inoculum_intensity` has to be > 0 for the model to simulate",
+      "`primary_infection_intensity` has to be > 0 for the model to simulate",
       " disease spread"
     )
   }
@@ -269,7 +276,7 @@ trace_asco <- function(weather,
   infected_rows <- which_paddock_row(paddock = paddock,
                                      query = primary_infection_foci)
   if ("load" %in% colnames(primary_infection_foci) == FALSE) {
-    primary_infection_foci[, load := primary_inoculum_intensity]
+    primary_infection_foci[, load := primary_infection_intensity]
   } else{
     if (all(colnames(primary_infection_foci) %in% c("x", "y"))) {
       stop(call. = FALSE,
@@ -376,12 +383,12 @@ trace_asco <- function(weather,
   # When the time of initial infection occurs, infect the paddock coordinates
     if (initial_infection == time_increments[i]) {
 
-      # if primary_inoculum_intensity exceeds the number of growing points send
+      # if primary_infection_intensity exceeds the number of growing points send
       #  warning
-      if (primary_inoculum_intensity > daily_vals_list[[i]][["gp_standard"]]) {
+      if (primary_infection_intensity > daily_vals_list[[i]][["gp_standard"]]) {
         warning(
           call. = FALSE,
-          "`primary_inoculum_intensity` exceeds the number of growing points ",
+          "`primary_infection_intensity` exceeds the number of growing points ",
           "at time of infection `growing_points`: ",
           daily_vals_list[[i]][["gp_standard"]],
           "\nThis may cause an overestimation of disease spread"
