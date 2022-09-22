@@ -64,7 +64,7 @@ Billa_Billa <- format_weather(
   x = Billa_Billa,
   POSIXct_time = "local_time",
   temp = "mean_daily_temp",
-  ws = "ws",
+  ws = "wind_ km_h",
   wd_sd = "wd_sd",
   rain = "rain_mm",
   wd = "wd",
