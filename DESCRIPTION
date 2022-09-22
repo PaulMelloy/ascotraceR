@@ -1,6 +1,6 @@
 Package: ascotraceR
 Title: Simulate the Spread of Ascochyta Blight in Chickpea
-Version: 0.0.1.9000
+Version: 0.1.0
 DOI: 10.5281/zenodo.5771290
 Authors@R: 
     c(person(given = "Ihsanul",
@@ -35,7 +35,7 @@ BugReports: https://github.com/IhsanKhaliq/ascotraceR/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Depends: 
     R (>= 3.5.0)
 Imports:

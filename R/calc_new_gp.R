@@ -20,7 +20,8 @@ calc_new_gp <-
   function(current_growing_points,
            gp_rr,
            max_gp,
-           mean_air_temp) {
+           mean_air_temp,
+           na.rm = FALSE) {
 
     # Check values are not lower than 0
     sapply(current_growing_points, function(cgp){
@@ -30,6 +31,12 @@ calc_new_gp <-
              sep = "")
       }
     })
+
+    # stop if mean_air_temp is NA
+    if(is.na(mean_air_temp) &
+       isFALSE(na.rm)){
+      stop("'mean_air_temp' contains NA values")
+    }
 
     # calculate number of new growing points in 24 hours
     cgps <-
