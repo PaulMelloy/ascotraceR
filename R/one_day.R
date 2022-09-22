@@ -149,7 +149,8 @@ one_day <- function(i_date,
 
   # Don't spread spores if there are no infected coordinates
   # Don't spread if in fungicide protection period causes 0 interception probability
-  if (nrow(daily_vals[["infected_coords"]]) > 0 &
+  if ((nrow(daily_vals[["infected_coords"]]) > 0 |
+      "stubble_lesions" %in% colnames(daily_vals$paddock)) &
       max_interception_probability > 0) {
     # filter to hours which meet moisture requirements for spread
     weather_spread_hours <-
