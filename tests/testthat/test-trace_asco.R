@@ -196,7 +196,8 @@ test_that("test3 returns some sporulating gps", {
 
 })
 
-test_that("returns an error when initial infection is before sowing date", {
+test_that("returns an error ", {
+  # error when initial infection is before sowing date
   expect_error(
     trace_asco(
       weather = newM_weather,
@@ -209,6 +210,37 @@ test_that("returns an error when initial infection is before sowing date", {
       primary_infection_foci = qry
     )
   )
+
+  # error when sowing date is not in weather data
+  expect_error(
+    trace_asco(
+      weather = newM_weather,
+      paddock_length = 100,
+      paddock_width = 100,
+      initial_infection = as.POSIXct("1998-03-10"),
+      sowing_date = as.POSIXct("1998-03-01"),
+      harvest_date = as.POSIXct("1998-03-09") + lubridate::ddays(28),
+      time_zone = "Australia/Perth",
+      primary_infection_foci = qry
+    ),
+    regexp = "Insuficent weather data:'sowing_date' occurs before the first 'weather' data record"
+  )
+
+  # error when harvest date is not in weather data
+  expect_error(
+    trace_asco(
+      weather = newM_weather,
+      paddock_length = 100,
+      paddock_width = 100,
+      initial_infection = as.POSIXct("1998-03-10"),
+      sowing_date = as.POSIXct("1998-03-09"),
+      harvest_date = as.POSIXct("1998-12-09") + lubridate::ddays(28),
+      time_zone = "Australia/Perth",
+      primary_infection_foci = qry
+    ),
+    regexp = "Insuficent weather data:'harvest_date' occurs after the last 'weather' data record"
+  )
+
 })
 
 test_that("returns an error with invalid date formats", {
@@ -367,6 +399,7 @@ test_that("fungicides reduce spread", {
       fungicide_dates = c("1998-03-18","1998-03-21"))
 
     )
+
 
 
   })
