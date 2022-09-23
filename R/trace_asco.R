@@ -51,7 +51,7 @@
 #' @param stubble_inoculum_intensity Refers to the quantity of primary inoculum
 #'   as lesions on crop stubble at the time of `initial_infection`. Defaults to
 #'   `0`.
-#' @param n_stubble_foci Quantifies the number of stuble infection foci. The
+#' @param n_stubble_foci Quantifies the number of stubble infection foci. The
 #'   value can only be `1` when `stubble_inoculum_foci = "centre"` and can be
 #'   greater than `1` if `stubble_inoculum_foci = "random`. Ignored if
 #'   `stubble_inoculum_foci` is `uniform` or a `data.frame` of infected coordinates.
