@@ -26,8 +26,8 @@ test_that("tidy_trace() produces expected output", {
       "new_gp",
       "susceptible_gp",
       "exposed_gp",
-      "infectious_gp",,
-      "stubble_lesions"
+      "infectious_gp",
+      "stubble_lesions",
       "cdd",
       "cwh",
       "cr",
