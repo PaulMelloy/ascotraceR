@@ -1,4 +1,7 @@
-# ascotraceR 0.1.1
+# ascotraceR 1.0.0
+## Major changes  
+* Adding the ability to specify the type of inoculum or infection.  
+
 ## patch  
 
 * Add checks for if weather data includes simulation start and end days, 
