@@ -131,7 +131,7 @@ test_that("intense primary_infection_foci lead to more infections", {
   expect_length(test2[[1]], 11)
   expect_equal(test2[[5]][["exposed_gps"]][, .N], 0)
   expect_equal(test2[[5]][["paddock"]][exposed_gp > 0, .N], 0)
-  expect_equal(test2[[5]][["paddock"]][infectious_gp > 0, infectious_gp], 20)
+  expect_equal(test2[[5]][["paddock"]][infectious_gp > 0, infectious_gp], 10)
   expect_length(test2[[5]][["paddock"]][infectious_gp > 0, infectious_gp], 1)
   expect_equal(test2[[5]][["exposed_gps"]][spores_per_packet  >
                                              0, spores_per_packet], vector(mode = "numeric"))
@@ -154,7 +154,7 @@ test3 <- trace_asco(
 
 
 test_that("test3 returns some sporulating gps", {
-  expect_equal(test3[[30]][["paddock"]][, sum(infectious_gp)], 20)
+  expect_equal(test3[[30]][["paddock"]][, sum(infectious_gp)], 10)
   expect_length(test3, 30)
   expect_length(test3[[1]], 11)
 })
@@ -194,6 +194,30 @@ test_that("test3 returns some sporulating gps", {
   expect_length(test3[[1]], 11)
   expect_true(all(test3[[30]][["exposed_gps"]][, unique(cdd_at_infection)] >
                     test3[[30]][["cdd"]] - 200))
+
+})
+
+
+
+test_that("test4 infects from stubble", {
+  set.seed(667)
+  test4 <- trace_asco(
+    weather = newM_weather,
+    paddock_length = 10,
+    paddock_width = 10,
+    initial_infection = "1998-03-10",
+    sowing_date = "1998-03-09",
+    harvest_date = "1998-04-06",
+    time_zone = "Australia/Perth",
+    primary_infection_intensity = 0,
+    stubble_inoculum_foci = "uniform",
+    stubble_inoculum_intensity = 10,
+    latent_period_cdd = 100
+  )
+
+  expect_equal(test4[[30]][["paddock"]][, sum(infectious_gp)], 36)
+  expect_length(test4, 30)
+  expect_length(test4[[1]], 11)
 
 })
 
@@ -368,7 +392,7 @@ test_that("fungicides reduce spread", {
     st7 <- summarise_trace(test7)
 
     expect_equal(sum(st7[i_date  >= .vali_date("1998-03-18") &
-                           i_date  <= .vali_date("1998-03-22"),exposed_gp]),119)
+                           i_date  <= .vali_date("1998-03-22"),exposed_gp]),77)
 
     # Expect no errors from two fungicide dates
     test7a <- trace_asco(
