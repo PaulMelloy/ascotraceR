@@ -1,7 +1,8 @@
 #' Indicates successful infections leading to disease or lesions development
 #'
-#' [successful_infections()] Determines successful infections. That is,
-#' infections that have developed into visible lesions
+#' @details
+#'  Determines successful infections.
+#'  That is, infections that have developed into visible lesions
 #'
 #' @param spore_targets A data.table with variables x, y and spores_per_packet
 #'   (formally named spore_packet)
