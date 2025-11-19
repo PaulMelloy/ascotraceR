@@ -28,6 +28,19 @@ test3 <- calc_new_gp(
   mean_air_temp = 24
 )
 
+# check errors catch data inconsistancys
+test_that("receive and error with NA air temperature",{
+  expect_error(
+    calc_new_gp(
+      current_growing_points = 40,
+      gp_rr = 0.0065,
+      max_gp = 15000,
+      mean_air_temp = NA
+    ),
+    regexp = "'mean_air_temp' contains NA values")
+})
+
+
 test_that("calc_new_gp returns a number", {
   expect_equal(unique(test1), 0)
   expect_equal(round(test3, 6), 6)

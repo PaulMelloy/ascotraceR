@@ -61,6 +61,10 @@ daily_vals_list <-
     exposed_gps = data.table() # data.table of infected growing points still in latent period and not sporilating (exposed_gp)
   )
 
+newM_weather[, rain_sum := frollsum(rain,
+                                    fill = 0,
+                                    n = 24,
+                                    na.rm = TRUE)]
 
 # begin testing
 set.seed(666)

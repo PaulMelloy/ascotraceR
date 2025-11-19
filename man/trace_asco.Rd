@@ -18,7 +18,7 @@ trace_asco(
   latent_period_cdd = 150,
   time_zone = "UTC",
   primary_infection_foci = "random",
-  primary_inoculum_intensity = 1,
+  primary_inoculum_intensity = 20,
   n_foci = 1,
   spores_per_gp_per_wet_hour = 0.22,
   splash_cauchy_parameter = 0.5,
@@ -26,7 +26,8 @@ trace_asco(
   daily_rain_threshold = 2,
   hourly_rain_threshold = 0.1,
   susceptible_days = 2,
-  rainfall_multiplier = FALSE
+  rainfall_multiplier = FALSE,
+  fungicide_dates = NULL
 )
 }
 \arguments{
@@ -78,11 +79,10 @@ cell/s coordinates where the epidemic should begin. The \sQuote{load}
 column is optional and can specify the \code{primary_inoculum_intensity} for
 each coordinate.}
 
-\item{primary_inoculum_intensity}{Refers to the amount of primary infection
-as lesions on chickpea plants at the time of \code{initial_infection}. On the
-date of initial infection in the experiment. The sources of primary
-inoculum can be infected seed, volunteer chickpea plants or infested
-stubble from the previous seasons. Defaults to \code{1}.}
+\item{primary_inoculum_intensity}{Refers to the amount of primary inoculum as
+lesions on infested chickpea stubble for initiating disease. The sources of
+primary inoculum can be infected seed, volunteer chickpea plants or
+infested stubble from the previous seasons. Defaults to \code{200}.}
 
 \item{n_foci}{Quantifies the number of primary infection foci. The value is
 \code{1} when \code{primary_infection_foci = "centre"} and can be greater than \code{1} if
@@ -110,7 +110,7 @@ met). Defaults to \code{0.1}.}
 
 \item{susceptible_days}{the number of days for which conidia remain viable on
 chickpea after dispersal. Defaults to \code{2}. Conidia remain viable on the
-plant for at least 48 hours after a spread event}
+plant for at least 48 hours after a spread event.}
 
 \item{rainfall_multiplier}{logical values will turn on or off rainfall
 multiplier default method. The default method increases the number of
@@ -118,6 +118,10 @@ spores spread per growing point if the rainfall in the spore spread event
 hour is greater than one. Numeric values will scale the number of spores
 spread per growing point against the volume of rainfall in the hour.
 Defaults to \code{FALSE}.}
+
+\item{fungicide_dates}{a character vector of dates indicating when a preventative
+fungicide application is made. Dates need to be supplied in ISO8601 format
+(YYYY-MM-DD), \emph{e.g.} \dQuote{2020-04-26}.}
 }
 \value{
 a nested \code{list} object where each sub-list contains daily data for
